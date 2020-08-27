@@ -22,7 +22,7 @@ bool isRespRateOk(float respRate)
 }
 bool vitalsAreOk(float bpm, float spo2, float respRate) {
  
-  return (isBpmOk && isSpo2Ok && isRespRateOk);
+  return (isBpmOk(bpm) && isSpo2Ok(spo2) && isRespRateOk(respRate));
 }
 
 int main() {
