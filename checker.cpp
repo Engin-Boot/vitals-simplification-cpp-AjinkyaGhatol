@@ -103,7 +103,7 @@ int main() {
     assert(isOk("SPO2", 90) == true);
     assert(isOk("SPO2", 89) == false);
 
-    s.setAlertMethod(&sms);
+    s.setAlertMethod(&horn);
     assert(isOk("RESPRATE", 40) == true);
     assert(isOk("RESPRATE", 100) == false);
 
