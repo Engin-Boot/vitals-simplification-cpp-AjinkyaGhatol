@@ -27,7 +27,7 @@ int getID(string string_id)
 bool isOk(string string_id, float val)
 {
     int id = getID(string_id);
-    cout << id << endl;
+    
     return(val >= vital_list[id].minLimit && val <= vital_list[id].maxLimit);
 }
 void addVital(string string_id, float min, float max)
@@ -36,7 +36,7 @@ void addVital(string string_id, float min, float max)
 }
 
 int main() {
-    //vital BPM{ "BPM",70, 150 };
+    
     addVital("BPM",70, 150 );
     addVital( "SPO2",90,100 );
     addVital( "RESPRATE",30,95 );
@@ -54,6 +54,6 @@ int main() {
     addVital("BP", 100, 200);
     assert(isOk("BP", 150) == true);
     assert(isOk("BP", 80) == false);
-    //cout << vital_list[0].minLimit;
+    
     return 0;
 }
