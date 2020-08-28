@@ -28,10 +28,7 @@ bool isOk(string string_id, float val)
 {
     int id = getID(string_id);
     cout << id << endl;
-    if (val < vital_list[id].minLimit || val > vital_list[id].maxLimit) {
-        return false;
-    }
-    return true;
+    return(val >= vital_list[id].minLimit && val <= vital_list[id].maxLimit);
 }
 void addVital(string string_id, float min, float max)
 {
