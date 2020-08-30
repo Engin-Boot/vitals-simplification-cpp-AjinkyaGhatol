@@ -49,6 +49,12 @@ struct vital
 };
 vector<vital> vital_list;
 
+struct vital_array
+{
+    string string_id;
+    float val;
+};
+
 int getIndex(string string_id)
 {
     int id = -1;
@@ -112,13 +118,24 @@ bool checkVital(string string_id, float val)
         return isOk(index_of_added, val);
     }
 }
+bool checkVital(vital_array vt_array[],int size)
+{
+    bool result = true;
+    for (int i = 0; i < size; i++)
+    {
+        if (checkVital(vt_array[i].string_id, vt_array[i].val) == false)
+            result = false;
+    }
+    return result;
+}
+vital_array vital_array_to_pass[5];
 int main() {
     
     alertSms sms;
     alertHorn horn;
     s.setAlertMethod(&sms);
     addVital("BPM",70, 150 );
-    addVital( "SPO2",90,100 );
+    addVital( "SPO2",90,1000 );
     addVital( "RESPRATE",30,95 );
 
     assert(checkVital("BPM", 80) == true);
@@ -144,6 +161,35 @@ int main() {
     assert(checkVital("SUGAR", 50) == false);
 
 
+    
    
+    //all are within range
+    vital_array_to_pass[0].string_id = "BPM";
+    vital_array_to_pass[0].val = 140;
+    vital_array_to_pass[1].string_id = "SPO2";
+    vital_array_to_pass[1].val = 100; 
+    vital_array_to_pass[2].string_id = "RESPRATE";
+    vital_array_to_pass[2].val = 40;
+    vital_array_to_pass[3].string_id = "BP";
+    vital_array_to_pass[3].val = 150;
+    vital_array_to_pass[4].string_id = "SUGAR";
+    vital_array_to_pass[4].val = 200;
+
+    assert(checkVital(vital_array_to_pass,5)==true);
+
+    //BPM and sugar not in limit
+    vital_array_to_pass[0].string_id = "BPM";
+    vital_array_to_pass[0].val = 69;
+    vital_array_to_pass[1].string_id = "SPO2";
+    vital_array_to_pass[1].val = 100;
+    vital_array_to_pass[2].string_id = "RESPRATE";
+    vital_array_to_pass[2].val = 40;
+    vital_array_to_pass[3].string_id = "BP";
+    vital_array_to_pass[3].val = 150;
+    vital_array_to_pass[4].string_id = "SUGAR";
+    vital_array_to_pass[4].val = 201;
+
+    assert(checkVital(vital_array_to_pass, 5) == false);
+    
     return 0;
 }
