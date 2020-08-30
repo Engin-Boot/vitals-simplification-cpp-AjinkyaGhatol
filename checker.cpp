@@ -89,10 +89,12 @@ void addVital(string string_id, float min, float max)
 int addVital(string string_id)
 {
     float min, max;
-    cout << "Enter min limit of vital:" << endl;
-    cin >> min;
-    cout << "Enter max limit of vital:" << endl;
-    cin >> max;
+    cout << "Enter min limit of vital:enterd 100" << endl;
+    //cin >> min;
+    min = 100;
+    max = 200;
+    cout << "Enter max limit of vital:enterd 200" << endl;
+    //cin >> max;
     vital_list.push_back({ string_id,min,max });
     return (vital_list.size()-1);
 }
