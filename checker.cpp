@@ -135,9 +135,13 @@ int main() {
     assert(checkVital("BP", 80) == false);
 
     //check vital sugar without adding it first
+    //limits for sugar are 100 to 200
     assert(checkVital("SUGAR", 300) == false);
    
     assert(checkVital("SUGAR", 200) == true);
+    assert(checkVital("SUGAR", 50) == false);
+
+
    
     return 0;
 }
