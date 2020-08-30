@@ -1,3 +1,4 @@
+//limits are inclusive
 #include <assert.h>
 #include<iostream>
 #include<vector>
@@ -48,10 +49,10 @@ struct vital
 };
 vector<vital> vital_list;
 
-int getID(string string_id)
+int getIndex(string string_id)
 {
-    int id = 10000;
-    for (int i = 0; i < vital_list.size(); i++)
+    int id = -1;
+    for (unsigned int i = 0; i < vital_list.size(); i++)
     {
         if (vital_list[i].vital_id == string_id)
         {
@@ -61,22 +62,21 @@ int getID(string string_id)
     }
     return id;
 }
-bool isOk(string string_id, float val)
+bool isOk(int string_index, float val)
 {
-    int id = getID(string_id);
-   
+    
     //return(val >= vital_list[id].minLimit && val <= vital_list[id].maxLimit);
-    if (val < vital_list[id].minLimit)
+    if (val < vital_list[string_index].minLimit)
     {
         string message="";
-        message = message + "Patients " + vital_list[id].vital_id + " is low:" + to_string(val);;
+        message = message + "Patients " + vital_list[string_index].vital_id + " is low:" + to_string(val);;
         s.alertNow(message);
         return false;
     }
-    else if (val > vital_list[id].maxLimit)
+    else if (val > vital_list[string_index].maxLimit)
     {
         string message = "";
-        message = message + "Patients " + vital_list[id].vital_id + " is high:"+to_string(val);
+        message = message + "Patients " + vital_list[string_index].vital_id + " is high:"+to_string(val);
         s.alertNow(message);
         return false;
     }
@@ -86,7 +86,30 @@ void addVital(string string_id, float min, float max)
 {
     vital_list.push_back({ string_id,min,max });
 }
-
+int addVital(string string_id)
+{
+    float min, max;
+    cout << "Enter min limit of vital:" << endl;
+    cin >> min;
+    cout << "Enter max limit of vital:" << endl;
+    cin >> max;
+    vital_list.push_back({ string_id,min,max });
+    return (vital_list.size()-1);
+}
+bool checkVital(string string_id, float val)
+{
+    int index = getIndex(string_id);
+    if (index != -1)
+    {
+        return isOk(index, val);
+    }
+    else
+    {
+        int index_of_added;
+        index_of_added =addVital(string_id);
+        return isOk(index_of_added, val);
+    }
+}
 int main() {
     
     alertSms sms;
@@ -96,20 +119,25 @@ int main() {
     addVital( "SPO2",90,100 );
     addVital( "RESPRATE",30,95 );
 
-    assert(isOk("BPM", 80) == true);
-    assert(isOk("BPM", 160) == false);
+    assert(checkVital("BPM", 80) == true);
+    assert(checkVital("BPM", 160) == false);
 
-    assert(isOk("SPO2", 95) == true);
-    assert(isOk("SPO2", 90) == true);
-    assert(isOk("SPO2", 89) == false);
+    assert(checkVital("SPO2", 95) == true);
+    assert(checkVital("SPO2", 90) == true);
+    assert(checkVital("SPO2", 89) == false);
 
     s.setAlertMethod(&horn);
-    assert(isOk("RESPRATE", 40) == true);
-    assert(isOk("RESPRATE", 100) == false);
+    assert(checkVital("RESPRATE", 40) == true);
+    assert(checkVital("RESPRATE", 100) == false);
 
     addVital("BP", 100, 200);
-    assert(isOk("BP", 150) == true);
-    assert(isOk("BP", 80) == false);
+    assert(checkVital("BP", 150) == true);
+    assert(checkVital("BP", 80) == false);
+
+    //check vital sugar without adding it first
+    assert(checkVital("SUGAR", 300) == false);
+   
+    assert(checkVital("SUGAR", 200) == true);
    
     return 0;
 }
