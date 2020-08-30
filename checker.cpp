@@ -128,7 +128,7 @@ bool checkVital(vital_array vt_array[],int size)
     }
     return result;
 }
-vital_array vital_array_to_pass[5];
+
 int main() {
     
     alertSms sms;
@@ -161,7 +161,7 @@ int main() {
     assert(checkVital("SUGAR", 50) == false);
 
 
-    
+    vital_array vital_array_to_pass[5];
    
     //all are within range
     vital_array_to_pass[0].string_id = "BPM";
